@@ -12,6 +12,7 @@
 namespace Taakerman\PString;
 
 use Taakerman\PString\CharSequence;
+use Taakerman\PString\Charsets;
 
 use Joomla\String\String as JS;
 
@@ -20,37 +21,35 @@ use Joomla\String\String as JS;
  */
 class String implements CharSequence {
     private $utf8;
-    private $ascii;
+    private $pureAscii;
     
-    const INTERNAL_ENCODING = 'UTF-8';
-    
-    public function __construct($str, $encoding = null, $asciiOnly = null) {
+    public function __construct($str, $encoding = null, $pureAsciiOnly = null) {
         if ($encoding == null) {
             $encoding = mb_detect_encoding($str, mb_detect_order(), true);
         }
         
-        if ($encoding != self::INTERNAL_ENCODING) {
-            $this->utf8 = mb_convert_encoding($str, self::INTERNAL_ENCODING, $encoding);
+        if ($encoding != Charsets::UTF8) {
+            $this->utf8 = mb_convert_encoding($str, Charsets::UTF8, $encoding);
         }
         
-        $this->utf8 = mb_convert_encoding($str, self::INTERNAL_ENCODING);
-        if ($asciiOnly == null) {
-            $this->ascii = JS::is_ascii($this->utf8);
+        $this->utf8 = mb_convert_encoding($str, Charsets::UTF8);
+        if ($pureAsciiOnly == null) {
+            $this->pureAscii = JS::is_pureAscii($this->utf8);
         } else {
-            $this->ascii = $asciiOnly;
+            $this->pureAscii = $pureAsciiOnly;
         }
     }
     
     private function from($str) {
-        return new String($str, self::INTERNAL_ENCODING, $this->ascii);
+        return new String($str, Charsets::UTF8, $this->pureAscii);
     }
     
     public function isAscii() {
-        return $this->ascii;
+        return $this->pureAscii;
     }
     
     public function length() {
-        if ($this->isAscii()) {
+        if ($this->pureAscii) {
             return strlen($this->utf8);
         }
         
@@ -60,18 +59,18 @@ class String implements CharSequence {
     
     public function native($encoding = null) {
         if ($encoding == null) {
-            $encoding = self::INTERNAL_ENCODING;
+            $encoding = Charsets::UTF8;
         }
         
-        if ($encoding != self::INTERNAL_ENCODING) {
-            return mb_convert_encoding($this->utf8, $encoding, self::INTERNAL_ENCODING);
+        if ($encoding != Charsets::UTF8) {
+            return mb_convert_encoding($this->utf8, $encoding, Charsets::UTF8);
         }
         
         return $this->utf8;
     }
     
     public function substr($start, $length) {
-        if ($this->isAscii()) {
+        if ($this->pureAscii) {
             return $this->from(substr($this->utf8, $start, $length));
         }
         
@@ -80,11 +79,11 @@ class String implements CharSequence {
     }
     
     public function startsWith(String $str) {
-        return 0 === mb_strpos($this->utf8, $str->native(), 0, self::INTERNAL_ENCODING);
+        return 0 === mb_strpos($this->utf8, $str->native(), 0, Charsets::UTF8);
     }
     
     public function endsWith(String $str) {
-        return mb_strrpos($this->utf8, $str->native(), 0, self::INTERNAL_ENCODING)
+        return mb_strrpos($this->utf8, $str->native(), 0, Charsets::UTF8)
             === $this->length() - $str->length();
     }
     
@@ -102,7 +101,7 @@ class String implements CharSequence {
     }
     
     public function toLower() {
-        if ($this->isAscii()) {
+        if ($this->pureAscii) {
             return $this->from(strtolower($this->utf8));
         }
         
@@ -111,7 +110,7 @@ class String implements CharSequence {
     }
     
     public function toUpper() {
-        if ($this->isAscii()) {
+        if ($this->pureAscii) {
             return $this->from(strtoupper($this->utf8));
         }
         
@@ -120,7 +119,7 @@ class String implements CharSequence {
     }
     
     public function pos(String $str, $offset = 0) {
-        if ($this->isAscii() && $str->isAscii()) {
+        if ($this->pureAscii && $str->isAscii()) {
             return strpos($this->utf8, $str->native(), $offset);
         }
         
@@ -129,7 +128,7 @@ class String implements CharSequence {
     }
     
     public function rpos(String $str, $offset = 0) {
-        if ($this->isAscii() && $str->isAscii()) {
+        if ($this->pureAscii && $str->isAscii()) {
             return strrpos($this->utf8, $str->native(), $offset);
         }
         
@@ -144,5 +143,4 @@ class String implements CharSequence {
     public function charAt($i) {
         return $this->substr($i, 1);
     }
-
 }

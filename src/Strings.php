@@ -20,6 +20,7 @@ use Taakerman\PString\Charsets;
  */
 class Strings {
     /**
+     * Returns an empty string on null or returns the original string
      * 
      * @param \Taakerman\PString\String $s
      * @return \Taakerman\PString\String 
@@ -28,10 +29,22 @@ class Strings {
         return ($s == null) ? new String("", Charsets::UTF8, true) : $s;
     }
     
+    /**
+     * Returns null if empty or the original string
+     * 
+     * @param \Taakerman\PString\String $s
+     * @return \Taakerman\PString\String
+     */
     public static function emptyToNull(String $s) {
         return ($s->length() == 0) ? null : $s;
     }
     
+    /**
+     * Null safe trim for string
+     * 
+     * @param \Taakerman\PString\String $s
+     * @return \Taakerman\PString\String
+     */
     public static function trim(String $s) {
         return self::nullToEmpty($s)->trim();
     }
