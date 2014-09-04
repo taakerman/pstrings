@@ -1,17 +1,24 @@
 <?php
 
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/*
+ * THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY 
+ * KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A
+ * PARTICULAR PURPOSE. 
+ * 
+ * You may copy and reuse as you please
  */
 
-namespace Webpixels\Aggregator\Domain\Model\String;
+namespace Taakerman\PString;
 
-use Webpixels\Aggregator\Domain\Model\String\BasicString;
+use Taakerman\PString\CharSequence;
 
 use Exception;
 
+/**
+ * The Leveshtein class is basically a port of apache commons StringUtils
+ * version
+ */
 class Levenshtein {
     
     /**
@@ -43,10 +50,10 @@ class Levenshtein {
      * @param s  the first String, must not be null
      * @param t  the second String, must not be null
      * @param threshold the target threshold, must not be negative
-     * @return result distance, or {@code -1} if the distance would be greater than the threshold
+     * @return result distance, or -1 if the distance would be greater than the threshold
      * @throws IllegalArgumentException if either String input {@code null} or negative threshold
      */
-    public function getDistance(BasicString $s, BasicString $t, $threshold) {
+    public function getDistance(CharSequence $s, CharSequence $t, $threshold) {
         if ($s == null || $t == null) {
             throw new Exception("Strings must not be null");
         }

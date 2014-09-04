@@ -1,0 +1,17 @@
+<?php
+
+/*
+ * THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY 
+ * KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A
+ * PARTICULAR PURPOSE. 
+ * 
+ * You may copy and reuse as you please
+ */
+
+namespace Taakerman\PString;
+
+class Charsets {
+    const UTF8 = 'UTF-8';
+    const ASCII = 'ASCII';
+}

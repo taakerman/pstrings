@@ -1,10 +1,24 @@
 <?php
 
-namespace Webpixels\Aggregator\Domain\Model\String;
+/*
+ * THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY 
+ * KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A
+ * PARTICULAR PURPOSE. 
+ * 
+ * You may copy and reuse as you please
+ */
+
+namespace Taakerman\PString;
+
+use Taakerman\PString\CharSequence;
 
 use Joomla\String\String as JS;
 
-class String implements BasicString {
+/**
+ * The String class is the main string class in the pstring library
+ */
+class String implements CharSequence {
     private $utf8;
     private $ascii;
     
